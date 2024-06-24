@@ -90,9 +90,12 @@ def generate_invalid_user_report(log_file):
     df.to_csv('invalid_user_report.csv', index=False)
     print('Report generated: invalid_user_report.csv')
 
-# TODO: Step 12
+# Step 12
 def generate_source_ip_log(log_file, ip_address):
-    return
+    matching_records, _ = filter_log_by_regex(log_file, rf'{ip_address}', ignore_case=False)
+    df = pd.DataFrame(matching_records, columns=['Log Records'])
+    df.to_csv(f'source_ip_{ip_address.replace(".", "_")}_log.csv', index=False)
+    print(f'Report generated: source_ip_{ip_address.replace(".", "_")}_log.csv')
 
 if __name__ == '__main__':
     main()

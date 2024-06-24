@@ -1,10 +1,30 @@
+import sys
+import re
+import pandas as pd
 
 def main():
     log_file = get_log_file_path_from_cmd_line()
 
-# TODO: Step 3
-def get_log_file_path_from_cmd_line():
-    return
+    records, _ = filter_log_by_regex(log_file, r'sshd', ignore_case=True, print_summary=True, print_records=True)
+    port_traffic = tally_port_traffic(log_file)
+    generate_port_traffic_report(log_file, 22)  # Assuming port 22 for example
+    generate_invalid_user_report(log_file)
+    generate_source_ip_log(log_file, '220.195.35.40')
+
+# Step 3
+def get_log_file_path_from_cmd_line(param_number):
+    if len(sys.argv) <= param_number:
+        print(f"Error: Missing command line parameter #{param_number}")
+        sys.exit(1)
+    log_file_path = sys.argv[param_number]
+    try:
+        with open(log_file_path, 'r') as file:
+            pass
+    except FileNotFoundError:
+        print(f"Error: File not found - {log_file_path}")
+        sys.exit(1)
+        
+    return log_file_path
 
 # TODO: Steps 4-7
 def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):

@@ -23,11 +23,15 @@ def get_log_file_path_from_cmd_line(param_number):
     except FileNotFoundError:
         print(f"Error: File not found - {log_file_path}")
         sys.exit(1)
-        
+
     return log_file_path
 
 # TODO: Steps 4-7
 def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
+    flags = re.IGNORECASE if ignore_case else 0
+    pattern = re.compile(regex, flags)
+    matching_records = []
+    captured_data = []
     """Gets a list of records in a log file that match a specified regex.
 
     Args:
@@ -40,7 +44,21 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
     Returns:
         (list, list): List of records that match regex, List of tuples of captured data
     """
-    return
+
+    with open(log_file, 'r') as file:
+        for line in file:
+            match = pattern.search(line)
+            if match:
+                matching_records.append(line.strip())
+                captured_data.append(match.groups())
+
+    if print_records:
+        for record in matching_records:
+            print(record)
+    if print_summary:
+        print(f"The log file contains {len(matching_records)} records that {'case-insensitive ' if ignore_case else ''}match the regex \"{regex}\".")
+     
+    return matching_records, captured_data
 
 # TODO: Step 8
 def tally_port_traffic(log_file):

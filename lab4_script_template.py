@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 def main():
-    log_file = get_log_file_path_from_cmd_line()
+    log_file = get_log_file_path_from_cmd_line(1)
 
     records, _ = filter_log_by_regex(log_file, r'sshd', ignore_case=True, print_summary=True, print_records=True)
     port_traffic = tally_port_traffic(log_file)

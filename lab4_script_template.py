@@ -26,7 +26,7 @@ def get_log_file_path_from_cmd_line(param_number):
 
     return log_file_path
 
-# TODO: Steps 4-7
+# Steps 4-7
 def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
     flags = re.IGNORECASE if ignore_case else 0
     pattern = re.compile(regex, flags)
@@ -60,7 +60,7 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
      
     return matching_records, captured_data
 
-# TODO: Step 8
+# Step 8
 def tally_port_traffic(log_file):
     port_traffic = {}
 
@@ -76,16 +76,19 @@ def tally_port_traffic(log_file):
 
     return port_traffic
 
-# TODO: Step 9
+# Step 9
 def generate_port_traffic_report(log_file, port_number):
     matching_records, _ = filter_log_by_regex(log_file, f'DPT={port_number}', ignore_case=False)
     df = pd.DataFrame(matching_records, columns=['Log Records'])
     df.to_csv(f'port_{port_number}_traffic_report.csv', index=False)
     print(f'Report generated: port_{port_number}_traffic_report.csv')
 
-# TODO: Step 11
+# Step 11
 def generate_invalid_user_report(log_file):
-    return
+    matching_records, _ = filter_log_by_regex(log_file, r'invalid user', ignore_case=True)
+    df = pd.DataFrame(matching_records, columns=['Log Records'])
+    df.to_csv('invalid_user_report.csv', index=False)
+    print('Report generated: invalid_user_report.csv')
 
 # TODO: Step 12
 def generate_source_ip_log(log_file, ip_address):

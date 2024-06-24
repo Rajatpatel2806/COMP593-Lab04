@@ -78,7 +78,10 @@ def tally_port_traffic(log_file):
 
 # TODO: Step 9
 def generate_port_traffic_report(log_file, port_number):
-    return
+    matching_records, _ = filter_log_by_regex(log_file, f'DPT={port_number}', ignore_case=False)
+    df = pd.DataFrame(matching_records, columns=['Log Records'])
+    df.to_csv(f'port_{port_number}_traffic_report.csv', index=False)
+    print(f'Report generated: port_{port_number}_traffic_report.csv')
 
 # TODO: Step 11
 def generate_invalid_user_report(log_file):

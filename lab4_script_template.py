@@ -62,7 +62,19 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
 
 # TODO: Step 8
 def tally_port_traffic(log_file):
-    return
+    port_traffic = {}
+
+    with open(log_file, 'r') as file:
+        for line in file:
+            match = re.search(r'DPT=(\d+)', line)
+            if match:
+                port = match.group(1)
+                if port in port_traffic:
+                    port_traffic[port] += 1
+                else:
+                    port_traffic[port] = 1
+
+    return port_traffic
 
 # TODO: Step 9
 def generate_port_traffic_report(log_file, port_number):
